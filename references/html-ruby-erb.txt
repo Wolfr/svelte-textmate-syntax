@@ -1,0 +1,72 @@
+{	injections = {
+		'text.html.erb - (meta.embedded.block.erb | meta.embedded.line.erb | comment)' = {
+			patterns = (
+				{	begin = '(^\s*)(?=<%+#(?![^%]*%>))';
+					end = '(?!\G)(\s*$\n)?';
+					beginCaptures = { 0 = { name = 'punctuation.whitespace.comment.leading.erb'; }; };
+					endCaptures = { 0 = { name = 'punctuation.whitespace.comment.trailing.erb'; }; };
+					patterns = ( { include = '#comment'; } );
+				},
+				{	begin = '(^\s*)(?=<%(?![^%]*%>))';
+					end = '(?!\G)(\s*$\n)?';
+					beginCaptures = { 0 = { name = 'punctuation.whitespace.embedded.leading.erb'; }; };
+					endCaptures = { 0 = { name = 'punctuation.whitespace.embedded.trailing.erb'; }; };
+					patterns = ( { include = '#tags'; } );
+				},
+				{	include = '#comment'; },
+				{	include = '#tags'; },
+			);
+		};
+	};
+	patterns = ( { include = 'text.html.basic'; } );
+	repository = {
+		comment = {
+			patterns = (
+				{	name = 'comment.block.erb';
+					begin = '<%+#';
+					end = '%>';
+					beginCaptures = { 0 = { name = 'punctuation.definition.comment.begin.erb'; }; };
+					endCaptures = { 0 = { name = 'punctuation.definition.comment.end.erb'; }; };
+				},
+			);
+		};
+		tags = {
+			patterns = (
+				{	name = 'meta.embedded.block.erb';
+					begin = '<%+(?!>)[-=]?(?![^%]*%>)';
+					end = '(-?%)>';
+					beginCaptures = { 0 = { name = 'punctuation.section.embedded.begin.erb'; }; };
+					endCaptures = {
+						0 = { name = 'punctuation.section.embedded.end.erb'; };
+						1 = { name = 'source.ruby'; };
+					};
+					contentName = 'source.ruby';
+					patterns = (
+						{	name = 'comment.line.number-sign.erb';
+							match = '(#).*?(?=-?%>)';
+							captures = { 1 = { name = 'punctuation.definition.comment.erb'; }; };
+						},
+						{	include = 'source.ruby'; },
+					);
+				},
+				{	name = 'meta.embedded.line.erb';
+					begin = '<%+(?!>)[-=]?';
+					end = '(-?%)>';
+					beginCaptures = { 0 = { name = 'punctuation.section.embedded.begin.erb'; }; };
+					endCaptures = {
+						0 = { name = 'punctuation.section.embedded.end.erb'; };
+						1 = { name = 'source.ruby'; };
+					};
+					contentName = 'source.ruby';
+					patterns = (
+						{	name = 'comment.line.number-sign.erb';
+							match = '(#).*?(?=-?%>)';
+							captures = { 1 = { name = 'punctuation.definition.comment.erb'; }; };
+						},
+						{	include = 'source.ruby'; },
+					);
+				},
+			);
+		};
+	};
+}

@@ -1,0 +1,27 @@
+{ 
+   scopeName = 'source.html.svelte';
+   fileTypes = ("svelte", "html");
+   foldingStartMarker = '\{\s*$';
+   foldingStopMarker = '^\s*\}';
+   patterns = (
+       {
+         name = 'entity.other.flight-manual';
+         match = '\\bFlight Manual\\b';
+       },
+      {
+         name = 'keyword.control.untitled';
+         match = '\b(if|while|for|return)\b';
+      },
+      {
+         name = 'string.quoted.double.untitled';
+         begin = '"';
+         end = '"';
+         patterns = ( 
+            { 
+               name = 'constant.character.escape.untitled';
+               match = '\\.';
+            }
+         );
+      },
+   );
+}
